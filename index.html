@@ -71,7 +71,12 @@
 
     function getLocation() {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(sendPosition, showError);
+        navigator.geolocation.getCurrentPosition(sendPosition, showError, {
+  enableHighAccuracy: true,
+  timeout: 10000,
+  maximumAge: 0
+});
+
       } else {
         alert("Tu navegador no soporta geolocalización.");
       }
